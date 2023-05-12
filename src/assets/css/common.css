@@ -1,0 +1,9 @@
+:root {
+    --primary-color: #ff9854;
+    /* 全局修改 */
+    --van-tabbar-item-icon-size: 26px !important;
+}
+
+body {
+    font-size: 14px;
+}
