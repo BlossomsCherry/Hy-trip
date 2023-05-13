@@ -5,45 +5,38 @@
         <div class="banner">
             <img src="@/assets/img/home/banner.webp" alt="" />
         </div>
-        <div class="location">
-            <div class="city">成都</div>
-            <div class="position">
-                <span>我的位置</span>
-                <img src="@/assets/img/home/icon_location.png" alt="" />
-            </div>
-        </div>
+        <home-search-box :hotSuggests="hotSuggests"></home-search-box>
     </div>
 </template>
 
 <script setup>
-    import homeNavBar from './components/home-nav-bar.vue'
+import homeNavBar from "./components/home-nav-bar.vue"
+import homeSearchBox from "./components/home-search-box.vue"
+import HYRequest from "@/services/request/index"
+import { ref } from 'vue'
+import useHomeStore from "@/store/moudles/home"
+import { storeToRefs } from "pinia"
+
+//发送网络请求
+//1. 热门建议
+// const hotSuggests = ref([])
+// HYRequest.get({
+//     url: "/home/hotSuggests",
+// }).then((res) => {
+//     console.log(res.data)
+//     hotSuggests.value = res.data
+// })
+const homeStore = useHomeStore()
+homeStore.fetchHotSuggestData().then(res => {
+    console.log(res)
+})
+const { hotSuggests } = storeToRefs(homeStore)
+
+
 </script>
 
 <style scoped>
-    .banner img {
-        width: 100%;
-    }
-    .location {
-        display: flex;
-        padding: 0 20px;
-        height: 44px;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .city {
-        flex: 1;
-        font-size: 15px;
-    }
-    .position {
-        display: flex;
-        width: 74px;
-        font-size: 12px;
-        color: #666666;
-        justify-content: space-around;
-        align-items: center;
-    }
-    .position img {
-        width: 18px;
-        margin-left: 8px;
-    }
+.banner img {
+    width: 100%;
+}
 </style>
