@@ -1,7 +1,7 @@
 <template>
     <div class="tab-bar">
         <van-tabbar v-model="currentIndex" active-color="#ff9854" route="true">
-            <template v-for="(item, index) in tabbarData">
+            <template v-for="(item, index) in tabBarData">
                 <van-tabbar-item :to="item.path" icon="home-o">
                     <span>{{ item.text }}</span>
                     <!-- 具名插槽 -->
@@ -16,20 +16,21 @@
 </template>
 
 <script setup>
-    import tabbarData from '@/assets/data/tabbar'
-    import { getAssetURL } from '@/utils/load_assets'
-    import { ref } from 'vue'
+import tabBarData from '@/assets/data/tabbar'
+import { getAssetURL } from '@/utils/load_assets'
+import { ref } from 'vue'
 
-    const currentIndex = ref(0)
+const currentIndex = ref(0)
 </script>
 
 <style scoped>
-    /* 找到类，对类中的属性重写 */
-    /* ::v-deep 找到子组件的类，让子组件的类也可以生效 */
-    .tab-bar ::v-deep(.van-tabbar-item__icon) {
-        font-size: 26px;
-    }
-    .tab-bar img {
-        height: 26px;
-    }
+/* 找到类，对类中的属性重写 */
+/* ::v-deep 找到子组件的类，让子组件的类也可以生效 */
+.tab-bar ::v-deep(.van-tabbar-item__icon) {
+    font-size: 26px;
+}
+
+.tab-bar img {
+    height: 26px;
+}
 </style>

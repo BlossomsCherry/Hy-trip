@@ -38,16 +38,16 @@
 
         <!-- 热门建议 -->
         <div class="item hot-suggest">
-            <template v-for="(item, index) in hotSuggests">
+            <template v-for="(item, index) in hotSuggests" :key="index">
                 <div class="item" :style="{ color: item.tagText.color, background: item.tagText.background.color }">{{
                     item.tagText.text }}
                 </div>
             </template>
         </div>
 
-        <!-- 搜索框 -->
+        <!-- 搜索按钮 -->
         <div class=" item search-btn">
-            <button>开始搜索</button>
+            <button @click="searchBtnClick">开始搜索</button>
         </div>
     </div>
 </template>
@@ -59,7 +59,7 @@ import { storeToRefs } from "pinia"
 import { ref } from "vue"
 import dayjs from 'dayjs'
 
-//定义props
+// 定义props
 defineProps({
     hotSuggests: {
         type: Object,
@@ -72,6 +72,7 @@ const router = useRouter()
 // 位置/城市
 const cityStore = useCityStore()
 const { currentCity } = storeToRefs(cityStore)
+//获取位置点击
 function positionClick() {
     //获取位置信息
     navigator.geolocation.getCurrentPosition(
@@ -95,7 +96,7 @@ function cityClick() {
 }
 
 //默认入住时间
-const time = new Date();
+const time = new Date()
 const startTime = ref(`${time.getMonth() + 1}月${time.getDate()}日`)
 const endTime = ref(`${time.getMonth() + 1}月${time.getDate() + 1}日`)
 
@@ -121,7 +122,18 @@ function onConfirm(value) {
 }
 
 
-//热门推荐
+//开始搜索
+function searchBtnClick() {
+    router.push({
+        path: '/search',
+        //传递数据
+        query: {
+            startTime: startTime.value,
+            endTime: endTime.value,
+            currentCity: currentCity.value.cityName
+        }
+    })
+}
 
 </script>
 
@@ -221,7 +233,7 @@ function onConfirm(value) {
             flex: 1;
             margin-right: 50px;
             color: #fff;
-            background-color: var(--primary-color);
+            background-image: var(--theme-liner-gradient);
             font-size: 18px;
             border: 0;
             border-radius: 20px;
