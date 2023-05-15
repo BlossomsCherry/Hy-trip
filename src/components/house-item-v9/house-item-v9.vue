@@ -28,6 +28,7 @@ defineProps({
 })
 //评分
 const value = ref(5)
+
 </script>
 
 <style lang="less" scoped>

@@ -1,20 +1,27 @@
 <template>
     <div class="categories">
         <template v-for="(item, index) in categories" :key="item.id">
-            <div class="item">
+            <div class="item" @click="itemClick(index)">
                 <img :src="item.pictureUrl" alt="">
                 <span>{{ item.title }}</span>
+                <div :class="{ active: currentIndex === index }"></div>
             </div>
         </template>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import useHomeStore from '@/store/moudles/home'
 import { storeToRefs } from 'pinia';
 
 const homeStore = useHomeStore()
 const { categories } = storeToRefs(homeStore)
+const currentIndex = ref(0)
+
+function itemClick(index) {
+    currentIndex.value = index
+}
 </script>
 
 <style lang="less" scoped>
@@ -34,6 +41,7 @@ const { categories } = storeToRefs(homeStore)
     }
 
     .item {
+        position: relative;
         display: flex;
         flex-shrink: 0;
         padding: 0 12px;
@@ -45,9 +53,19 @@ const { categories } = storeToRefs(homeStore)
         justify-content: center;
         align-items: center;
 
+
         img {
             width: 32px;
             height: 32px;
+        }
+
+        .active {
+            position: absolute;
+            bottom: -2px;
+            width: 64%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
         }
     }
 }

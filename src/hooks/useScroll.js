@@ -1,4 +1,5 @@
 import { onUnmounted, onMounted, ref } from 'vue'
+import { throttle } from 'underscore'
 
 //方法一：传入回调函数
 // //监听window的滚动
@@ -33,7 +34,8 @@ export default function useScroll() {
     const scrollHeight = ref(0)
     const clientHeight = ref(0)
 
-    function scrollListener() {
+    //节流 throttle
+    const scrollListener = throttle(() => {
         //页面高度
         clientHeight.value = document.documentElement.clientHeight
         //window滚动距离
@@ -42,8 +44,7 @@ export default function useScroll() {
         if (clientHeight.value + scrollTop.value >= scrollHeight.value) {
             isReachBottom.value = true
         }
-    }
-
+    }, 100)
     //挂载后添加监听
     onMounted(() => {
         window.addEventListener('scroll', scrollListener)

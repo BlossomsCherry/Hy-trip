@@ -15,14 +15,14 @@
         <div class="item data-range">
             <div class="start">
                 <span class="text">入住</span>
-                <span class="time" @click="timeClick"> {{ startTime }} </span>
+                <span class="time" @click="timeClick"> {{ startDateStr }} </span>
             </div>
             <div class="stay">
                 <span class="text">共{{ stayDay }}晚</span>
             </div>
             <div class="end">
                 <span class="text">离店</span>
-                <span class="time" @click="timeClick">{{ endTime }}</span>
+                <span class="time" @click="timeClick">{{ endDateStr }}</span>
             </div>
         </div>
         <van-calendar v-model:show="show" @confirm="onConfirm" :round="false" color="#ff9854" type="range" />
@@ -53,10 +53,11 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import useCityStore from "@/store/moudles/city"
+import useMainStore from "@/store/moudles/main"
 import { storeToRefs } from "pinia"
-import { ref } from "vue"
 import dayjs from 'dayjs'
 
 // 定义props
@@ -95,27 +96,31 @@ function cityClick() {
     router.push("/city")
 }
 
-//默认入住时间
-const time = new Date()
-const startTime = ref(`${time.getMonth() + 1}月${time.getDate()}日`)
-const endTime = ref(`${time.getMonth() + 1}月${time.getDate() + 1}日`)
 
+//默认入住时间
+// const time = new Date()
+// const startDate = ref(`${time.getMonth() + 1}月${time.getDate()}日`)
+// const endDate = ref(`${time.getMonth() + 1}月${time.getDate() + 1}日`)
+
+const mainStore = useMainStore()
+const { startDate, endDate } = storeToRefs(mainStore)
+
+const startDateStr = computed(() => dayjs(startDate.value).format('MM月DD日'))
+const endDateStr = computed(() => dayjs(endDate.value).format('MM月DD日'))
 const stayDay = ref(1)
 //显示日历
 function timeClick() {
     show.value = true
 }
-
 //选择入住时间
 function onConfirm(value) {
     console.log(value.toLocaleString())
     //value[0]：入住时间   value[1]: 离开时间
-    startTime.value = dayjs(value[0]).format('MM月DD日')
-    endTime.value = dayjs(value[1]).format('MM月DD日')
+    mainStore.startDate = value[0]
+    mainStore.endDate = value[1]
 
     //时间差
     console.log(value[1] - value[0])
-    // stayDay.value = dayjs(value[1] - value[0]).format('DD')
     stayDay.value = dayjs(value[1]).diff(value[0], 'day')
     //隐藏日历
     show.value = false
@@ -128,8 +133,8 @@ function searchBtnClick() {
         path: '/search',
         //传递数据
         query: {
-            startTime: startTime.value,
-            endTime: endTime.value,
+            startDate: startDate.value,
+            endDate: endDate.value,
             currentCity: currentCity.value.cityName
         }
     })

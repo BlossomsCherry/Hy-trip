@@ -1,5 +1,5 @@
 <template>
-    <div class="item">
+    <div class="item" @click="itemClick">
         <div class="item-inner">
             <div class="cover">
                 <img :src="itemData?.image?.url" alt="">
