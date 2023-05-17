@@ -5,19 +5,17 @@
         </div>
         <div class="content">
             <slot>
-                <div class="facility">我是内容</div>
+                <h3>我是默认内容</h3>
             </slot>
         </div>
-        <div class="footer">
-            <slot>
-                <span class="more"> {{ moreText }} <van-icon name="arrow" /></span>
-            </slot>
+        <div class="footer" v-if="moreText.length">
+            <span class="more"> {{ moreText }} <van-icon name="arrow" /></span>
         </div>
     </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
     title: {
         type: String,
         default: ''
@@ -37,14 +35,14 @@ defineProps({
 
     .header {
         padding-bottom: 15px;
+        margin-bottom: 15px;
         border-bottom: 1px solid #eee;
     }
 
     .content {
-        margin: 10px 0;
-        background-color: #f7f9fb;
+        // padding: 10px 0;
+        border-radius: 5px;
 
-        .facility {}
     }
 
     .footer {

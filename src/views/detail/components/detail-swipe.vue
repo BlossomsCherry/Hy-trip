@@ -10,7 +10,7 @@
                 <div class="custom-indicator">
                     <template v-for="(value, key, index) in swipeGroup" :key="index">
                         <div class="item" :class="{ active: swipeData[active]?.enumPictureCategory == key }">
-                            <span class="text">{{ getName(value[0].title) }}</span>
+                            <span class="text">{{ getName(value[0]?.title) }}</span>
                             <span class="count" v-if="swipeData[active]?.enumPictureCategory == key">
                                 {{ getCategoryIndex(swipeData[active]) }} /{{ value.length + 1 }}
                             </span>
@@ -43,7 +43,7 @@ for (const item of props.swipeData) {
 
 //定义转换数据的方法
 function getName(name) {
-    return name.replace('【', '').replace('】', '').replace('：', '').replace('1', '')
+    return name?.replace('【', '')?.replace('】', '')?.replace('：', '')?.replace('1', '')
 }
 
 function getCategoryIndex(item) {

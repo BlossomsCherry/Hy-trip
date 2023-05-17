@@ -8,7 +8,20 @@
             <!-- 详情模块 -->
             <detail-info :topModule="topModule"></detail-info>
 
-            <detail-section title="房屋设施" moreText="查看全部设施"></detail-section>
+            <!-- 房屋设施 -->
+            <detail-facility :houseFacility="dynamicModule.facilityModule.houseFacility"></detail-facility>
+
+            <!-- 房东介绍 -->
+            <detail-landlord :landlord-module="dynamicModule.landlordModule"></detail-landlord>
+
+            <!-- 房客点评 -->
+            <detail-comment :comment-module="dynamicModule.commentModule"></detail-comment>
+
+            <!-- 预定须知 -->
+            <detail-notice :rules-module="dynamicModule.rulesModule"></detail-notice>
+
+            <!-- 位置周边 -->
+            <detail-map></detail-map>
         </div>
     </div>
 </template>
@@ -18,7 +31,11 @@ import { ref, computed } from 'vue'
 import navBar from '@/components/nav-bar/nav-bar.vue'
 import detailSwipe from './components/detail-swipe.vue'
 import detailInfo from './components/detail-info.vue'
-import detailSection from './components/detail-section.vue'
+import detailFacility from './components/detail-facility.vue'
+import detailLandlord from './components/detail-landlord.vue'
+import detailComment from './components/detail-comment.vue'
+import detailNotice from './components/detail-notice.vue'
+import detailMap from './components/detail-map.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getDetailInfos } from '@/services'
 
@@ -30,9 +47,12 @@ const houseId = route.params.id
 const detailInfos = ref({})
 const mainPart = computed(() => detailInfos.value?.mainPart)
 const topModule = computed(() => mainPart.value?.topModule)
+const dynamicModule = computed(() => mainPart.value?.dynamicModule)
+
 getDetailInfos(houseId).then(res => {
     // console.log(res)
     detailInfos.value = res.data
+    console.log(dynamicModule.value.facilityModule.houseFacility)
 })
 
 function textClick() {
