@@ -5,7 +5,7 @@
                 <i @click="textClick" class="icon-left"></i>
                 <span @click="textClick">{{ LeftText }}</span>
             </template>
-            <template #right>
+            <template #right v-if="isShowRight">
                 <i class="icon-right"></i>
             </template>
         </van-nav-bar>
@@ -22,6 +22,10 @@ defineProps({
     LeftText: {
         type: String,
         default: ''
+    },
+    isShowRight: {
+        type: Boolean,
+        default: true
     }
 })
 
