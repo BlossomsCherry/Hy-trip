@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div class="home" ref="homeRef">
         <!-- 标题 -->
         <home-nav-bar></home-nav-bar>
         <div class="banner">
@@ -18,9 +18,13 @@
         <home-content></home-content>
     </div>
 </template>
-
+<script>
+    export default {
+        name: 'home'
+    }
+</script>
 <script setup>
-    import { onUnmounted, onMounted, watch, ref, computed } from 'vue'
+    import { onUnmounted, onMounted, watch, ref, computed, onActivated } from 'vue'
     import homeNavBar from './components/home-nav-bar.vue'
     import homeSearchBox from './components/home-search-box.vue'
     import searchBar from '@/components/search-bar/search-bar.vue'
@@ -77,7 +81,8 @@
     //     homeStore.fetchHouseList()
     // })
 
-    const { isReachBottom, scrollTop } = useScroll()
+    const homeRef = ref()
+    const { isReachBottom, scrollTop } = useScroll(homeRef)
     watch(isReachBottom, newValue => {
         if (newValue) {
             homeStore.fetchHouseList().then(() => {
@@ -97,10 +102,20 @@
     const isShow = computed(() => {
         return scrollTop.value > 500
     })
+
+    //跳转回home时，保留原来位置
+    onActivated(() => {
+        homeRef.value?.scrollTo({
+            top: scrollTop.value
+        })
+    })
 </script>
 
 <style lang="less" scoped>
     .home {
+        height: 100vh;
+        overflow-y: auto;
+
         .banner {
             img {
                 width: 100%;

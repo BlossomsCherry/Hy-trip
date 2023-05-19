@@ -1,5 +1,5 @@
 <template>
-    <div class="detail" ref="detailRef">
+    <div class="detail">
         <tab-control
             class="tabs"
             :title-item="['描述', '设施', '房东', '评论', '须知', '周边']"
@@ -104,7 +104,6 @@
     }
 
     //tabControl相关操作
-    const detailRef = ref()
     const { scrollTop } = useScroll()
 
     const showTabControl = computed(() => {
@@ -116,11 +115,18 @@
         sectionEls.push(value?.$el)
     }
     console.log(sectionEls)
+
+    let isClick = false
+    let currentInstance = -1
     function itemClick(index) {
         let instance = sectionEls[index].offsetTop
         if (index !== 0) {
             instance = instance - 51
         }
+
+        isClick = true
+        currentInstance = instance
+
         window.scrollTo({
             //$el :可以拿到组件的根元素
             top: instance,
@@ -130,8 +136,13 @@
 
     //页面滚动，滚动时匹配对应的tabControl的索引
     const tabControlRef = ref()
-    const CIndex = ref()
     watch(scrollTop, newValue => {
+        //滚动到对应位置后修改
+        if (newValue === currentInstance) {
+            isClick = false
+        }
+        //如果点击了就不执行滚动的事件
+        if (isClick) return
         // 1.获取所有的区域的offsetTops
         const values = sectionEls.map(el => el.offsetTop)
         // console.log(values)
@@ -140,14 +151,13 @@
         let index = values.length - 1
         for (let i = 0; i < values.length; i++) {
             if (values[i] > newValue) {
-                index = i
+                index = i - 1
                 break
             }
         }
-        console.log(index)
-        CIndex.value = index
-        // console.log(tabControlRef.value?.currentIndex)
-        // tabControlRef.value?.currentIndex=index
+        // console.log(index)
+        //判断组件挂载没有
+        if (tabControlRef.value) tabControlRef.value?.show(index)
     })
 </script>
 

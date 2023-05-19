@@ -18,14 +18,25 @@
             default: []
         }
     })
+
     const currentIndex = ref(0)
 
-    const emits = defineEmits(['itemClick'])
+    const emit = defineEmits(['itemClick'])
 
     function itemClick(index) {
         currentIndex.value = index
-        emits('itemClick', index)
+        emit('itemClick', index)
     }
+
+    //修改currentIndex
+    function show(index) {
+        currentIndex.value = index
+    }
+    //把currentIndex、show()暴露出去
+    defineExpose({
+        currentIndex,
+        show
+    })
 </script>
 
 <style lang="less" scoped>
@@ -51,15 +62,5 @@
                 border-radius: 2px;
             }
         }
-
-        // .tab {
-        //     position: absolute;
-        //     left: 16px;
-        //     top: 36px;
-        //     width: 38px;
-        //     height: 3px;
-        //     border-radius: 5px;
-        //     background-color: var(--primary-color);
-        // }
     }
 </style>
