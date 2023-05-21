@@ -11,7 +11,13 @@
 
         <!-- 搜索框 -->
         <div class="top" v-if="isShow">
-            <search-bar></search-bar>
+            <search-bar @click="searchClick" text="关键字/位置/民宿">
+                <template #icon>
+                    <div class="right">
+                        <i class="icon"></i>
+                    </div>
+                </template>
+            </search-bar>
         </div>
 
         <!-- 列表展示 -->
@@ -25,6 +31,7 @@
 </script>
 <script setup>
     import { onUnmounted, onMounted, watch, ref, computed, onActivated } from 'vue'
+    import { useRouter } from 'vue-router'
     import homeNavBar from './components/home-nav-bar.vue'
     import homeSearchBox from './components/home-search-box.vue'
     import searchBar from '@/components/search-bar/search-bar.vue'
@@ -46,6 +53,7 @@
     //     hotSuggests.value = res.data
     // })
 
+    const router = useRouter()
     const homeStore = useHomeStore()
     //发送网络请求
     homeStore.fetchHotSuggestData()
@@ -103,6 +111,9 @@
         return scrollTop.value > 500
     })
 
+    function searchClick() {
+        router.push('/search')
+    }
     //跳转回home时，保留原来位置
     onActivated(() => {
         homeRef.value?.scrollTo({
@@ -129,6 +140,18 @@
             color: black;
             background-color: #fff;
             z-index: 99;
+            .right {
+                padding-right: 10px;
+
+                .icon {
+                    display: block;
+                    width: 24px;
+                    height: 24px;
+                    background-image: url('@/assets/img/home/home-sprite.png');
+                    background-position: -29px 41px;
+                    background-size: 207px 192px;
+                }
+            }
         }
     }
 </style>

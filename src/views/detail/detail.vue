@@ -64,6 +64,8 @@
             <img src="@/assets/img/detail/icon_ensure.png" alt="" />
             <div class="text">弘源旅途，永无止境！</div>
         </div>
+
+        <detail-tablist :pricePart="pricePart"></detail-tablist>
     </div>
 </template>
 
@@ -79,6 +81,7 @@
     import detailNotice from './components/detail-notice.vue'
     import detailMap from './components/detail-map.vue'
     import detailPriceIntro from './components/detail-price-intro.vue'
+    import detailTablist from './components/detail-tablist.vue'
     import { useRouter, useRoute } from 'vue-router'
     import { getDetailInfos } from '@/services'
     import useScroll from '@/hooks/useScroll'
@@ -89,6 +92,7 @@
 
     //发送网络请求获取数据
     const detailInfos = ref({})
+    const pricePart = computed(() => detailInfos.value?.pricePart)
     const mainPart = computed(() => detailInfos.value?.mainPart)
     const topModule = computed(() => mainPart.value?.topModule)
     const dynamicModule = computed(() => mainPart.value?.dynamicModule)
@@ -172,6 +176,7 @@
 
     .footer {
         display: flex;
+        margin-bottom: 60px;
         height: 120px;
         background-color: #fff;
         flex-direction: column;
