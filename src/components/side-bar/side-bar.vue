@@ -9,7 +9,7 @@
                 </van-sidebar>
             </div>
 
-            <div class="content">
+            <div class="content" v-if="!subGroups[active].subGroups.length">
                 <slot>
                     <template v-for="(item, index) in subGroups[active].items" :key="index">
                         <div
@@ -23,10 +23,36 @@
                     </template>
                 </slot>
             </div>
-        </div>
-        <div class="bottom">
-            <div class="left">清空</div>
-            <div class="right">查看房屋(220)套</div>
+
+            <!-- 二级列表 -->
+            <template v-if="subGroups[active].subGroups.length">
+                <div class="sub-side">
+                    <div class="sub-menu">
+                        <van-sidebar v-model="active">
+                            <template
+                                v-for="(item, index) in subGroups[active]?.subGroups"
+                                :key="index"
+                            >
+                                <van-sidebar-item :title="item.label" />
+                            </template>
+                        </van-sidebar>
+                    </div>
+                    <div class="sub-content">
+                        <template
+                            v-for="(value, index) in subGroups[active]?.subGroups[active]?.items"
+                            :key="index"
+                        >
+                            <div
+                                class="item"
+                                :class="{ active: currentIndex === index }"
+                                @click="activeClick(index)"
+                            >
+                                <div class="name">{{ value.label }}</div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -45,6 +71,8 @@
     function activeClick(index) {
         currentIndex.value = index
     }
+
+    //二级列表
 </script>
 
 <style lang="less" scoped>
@@ -87,37 +115,29 @@
                 }
             }
         }
-        .bottom {
-            position: absolute;
-            left: 0;
-            bottom: 42px;
-            width: 100%;
+        .sub-side {
+            --van-sidebar-background: #fff;
             display: flex;
-            height: 60px;
-            background-color: #fff;
-            font-size: 15px;
-            align-items: center;
-            z-index: 100;
-            .left {
-                display: flex;
-                margin: 0 20px;
-                width: 85px;
-                height: 40px;
-                border-radius: 20px;
-                color: #dadada;
-                background-color: #f3f4f6;
-                justify-content: center;
-                align-items: center;
+            flex: 1;
+            overflow: hidden;
+
+            .sub-menu {
+                height: calc(@popupHeight - 100px);
+                overflow-y: auto;
             }
-            .right {
-                display: flex;
-                width: 240px;
-                height: 40px;
-                border-radius: 20px;
-                color: #fff;
-                background-color: var(--primary-color);
-                justify-content: center;
-                align-items: center;
+            .sub-content {
+                flex: 1;
+                height: calc(@popupHeight - 100px);
+                overflow-y: auto;
+                .active {
+                    background-color: #fffcf5;
+                    .name {
+                        color: var(--primary-color);
+                    }
+                }
+                .item {
+                    padding: 20px 12px;
+                }
             }
         }
     }

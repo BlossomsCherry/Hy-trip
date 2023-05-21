@@ -17,6 +17,11 @@
             :sub-groups3="subGroups3"
             :mapOption2="mapOption2"
         ></dropdown-select>
+
+        <!-- 优惠、多人入住 -->
+        <div class="tab-wrapper">
+            <div class="tab-select"></div>
+        </div>
     </div>
 </template>
 <script>
