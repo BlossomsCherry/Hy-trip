@@ -62,7 +62,7 @@ export default function useScroll(elRef) {
     })
     //当离开页面时，移除监听
     onUnmounted(() => {
-        el.addEventListener('scroll', scrollListener)
+        el.removeEventListener('scroll', scrollListener)
     })
 
     return { isReachBottom, scrollTop, scrollHeight, clientHeight }
